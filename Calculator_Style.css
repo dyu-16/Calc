@@ -1,0 +1,35 @@
+body {
+    color: whitesmoke;
+    font-size: 1.5rem;
+}
+
+table {
+    margin: 9rem 0rem;
+    border-collapse: collapse;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+td {
+    border: 2px black solid;
+    padding: 2rem;
+}
+
+#display {
+    height: 2rem;
+    background-color: rgb(29, 42, 56);
+    text-align: right;
+    font-size: 2rem;
+}
+
+#rowOne {
+    background-color: rgb(44, 42, 42);
+}
+
+#rowTwo, #rowThree, #rowFour, #rowFive {
+    background-color: rgb(107, 107, 107);
+}
+
+.columnFour {
+    background-color: rgb(185, 185, 219);
+}
