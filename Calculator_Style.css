@@ -4,7 +4,8 @@ body {
 }
 
 table {
-    margin: 9rem 0rem;
+    margin: auto;
+    margin-top: 5rem;
     border-collapse: collapse;
     border-radius: 1rem;
     text-align: center;

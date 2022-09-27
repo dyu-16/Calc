@@ -1,6 +1,6 @@
 const calculator = {
     numberKeys: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"],
-    signKeys: ["divide", "multiply", "substract", 'plus', "equal"],
+    signKeys: ["divide", "multiply", "subtract", "plus", "equal"],
     topRowKeys: ["allClear", "plusMinus", "percent"],
     numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     signs: ["/", "*", "-", "+", "="],
@@ -21,24 +21,31 @@ const subtract = document.getElementById("subtract");
 const plus = document.getElementById("plus");
 const equal = document.getElementById("equal");
 
+let startState = true;
 let storedNumOne = 0;
 let storedNumTwo = undefined;
 let storedSign = "";
-let testSign = "5 * 5";
 
+const masterConsole = function() {
+    console.log("Display: " + display.innerHTML, "storedNumOne: " + storedNumOne, "storedNumTwo: " + storedNumTwo, "storedSign: " + storedSign, "startState: " + startState);
+}
 
 const numClicked = function() {
     for (let i = 0; i < calculator["numberKeys"].length; i++) {
         let currentNumId = document.getElementById(calculator["numberKeys"][i]);
         currentNumId.onclick = function() {
-            if (display.innerHTML === "0") {
+            if (storedNumOne === 0 && startState === true) {
                 display.innerHTML = calculator["numbers"][i];
                 storedNumOne = calculator["numbers"][i];
-                console.log(display.innerHTML, storedNumOne);
+                startState = false;
+                masterConsole();
+            } else if (storedNumOne !== 0 && startState === false) {
+                display.innerHTML = calculator["numbers"][i];
+
             } else {
                 display.innerHTML += calculator["numbers"][i];
                 storedNumOne = JSON.parse(display.innerHTML);
-                console.log(display.innerHTML, storedNumOne);
+                masterConsole();
             }
         }
     }
@@ -46,28 +53,48 @@ const numClicked = function() {
 
 numClicked();
 
+allClear.onclick = function() {
+    display.innerHTML = "0";
+    storedNumOne = 0;
+    storedNumTwo = undefined;
+    storedSign = "";
+    startState = true;
+    masterConsole();
+}
+
+
 const equalsEtc = function() {
+
+    const softReset = function () {
+        storedNumTwo = undefined;
+        display.innerHTML = storedNumOne;
+        masterConsole();
+    }
+
     if (storedSign === "/") {
         storedNumOne = storedNumOne / storedNumTwo;
-        display.innerHTML = storedNumOne;
+        softReset();
     } else if (storedSign === "*") {
         storedNumOne = storedNumOne * storedNumTwo;
-        display.innerHTML = storedNumOne;
+        softReset();
     } else if (storedSign === "+") {
         storedNumOne = storedNumOne + storedNumTwo;
-        display.innerHTML = storedNumOne;
+        softReset();
     } else if (storedSign === "-") {
         storedNumOne = storedNumOne - storedNumTwo;
-        display.innerHTML = storedNumOne;
+        softReset();
     }
 }
 
 const signClicked = function () {
     for (let i = 0; i < calculator["signKeys"].length; i++) {
-        let currentSignId = document.getElementById(calculator["signKeys"][i]);
-        currentSignId.onclick = function() {
+        let currentSignKey = calculator["signKeys"][i];
+        let currentSignKeyId = document.getElementById(currentSignKey);
+        currentSignKeyId.onclick = function() {
+            console.log(currentSignKey + " clicked");
             if (storedNumTwo === undefined && calculator["signs"][i] !== "=") {
                 storedSign = calculator["signs"][i];
+                display.innerHTML = "0";
                 console.log(storedSign);
             } else if (typeof storedNumTwo === "number") {
                 equalsEtc();
@@ -79,11 +106,7 @@ const signClicked = function () {
 signClicked();
 
 
-allClear.onclick = function() {
-    display.innerHTML = "0";
-    storedNumOne = 0;
-    console.log(display.innerHTML, storedNumOne);
-}
+
 
 
 
